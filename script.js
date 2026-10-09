@@ -1,9 +1,40 @@
 const form = document.querySelector("#note-form");
 const noteInput = document.querySelector("#note-input");
 const categorySelect = document.querySelector("#note-category");
+const errorMessage = document.querySelector("#error-message");
 const notesList = document.querySelector("#notes-list");
+const noteCount = document.querySelector("#note-count");
+const clearAllBtn = document.querySelector("#clear-all");
 
 let notes = [];
+
+function updateCount() {
+  if (notes.length === 0) {
+    noteCount.textContent = "You have no notes yet.";
+  } else if (notes.length === 1) {
+    noteCount.textContent = "You have 1 note.";
+  } else {
+    noteCount.textContent = `You have ${notes.length} notes.`;
+  }
+}
+
+function validate(text) {
+  if (text === "") {
+    return "Please type a note first.";
+  }
+  if (text.length > 200) {
+    return "Notes must be 200 characters or fewer.";
+  }
+  return "";
+}
+
+function deleteNote(id) {
+  notes = notes.filter(function (note) {
+    return note.id !== id;
+  });
+  render();
+  updateCount();
+}
 
 function render() {
   notesList.textContent = "";
@@ -30,6 +61,9 @@ function render() {
     deleteBtn.type = "button";
     deleteBtn.className = "secondary delete-btn";
     deleteBtn.textContent = "Delete";
+    deleteBtn.addEventListener("click", function () {
+      deleteNote(note.id);
+    });
 
     meta.append(label, date, deleteBtn);
     item.append(text, meta);
@@ -40,9 +74,19 @@ function render() {
 form.addEventListener("submit", function (event) {
   event.preventDefault();
 
+  const text = noteInput.value.trim();
+  const problem = validate(text);
+
+  if (problem) {
+    errorMessage.textContent = problem;
+    return;
+  }
+
+  errorMessage.textContent = "";
+
   const note = {
     id: Date.now(),
-    text: noteInput.value.trim(),
+    text: text,
     category: categorySelect.value,
     createdAt: new Date().toLocaleString(),
   };
@@ -50,6 +94,19 @@ form.addEventListener("submit", function (event) {
   notes.unshift(note);
   noteInput.value = "";
   render();
+  updateCount();
+});
+
+clearAllBtn.addEventListener("click", function () {
+  if (notes.length === 0) {
+    return;
+  }
+  if (confirm("Delete all notes?")) {
+    notes = [];
+    render();
+    updateCount();
+  }
 });
 
 render();
+updateCount();
