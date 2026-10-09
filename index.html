@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QuickNotes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1>QuickNotes</h1>
+    <p>Capture your ideas fast.</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>Add a note</h2>
+      <form id="note-form">
+        <label for="note-input">Your note</label>
+        <input type="text" id="note-input" name="note" placeholder="Type a note">
+        <label for="note-category">Category</label>
+        <select id="note-category" name="category">
+          <option value="personal">Personal</option>
+          <option value="work">Work</option>
+          <option value="study">Study</option>
+        </select>
+        <button type="submit">Add Note</button>
+      </form>
+      <p id="error-message"></p>
+    </section>
+
+    <section>
+      <h2>Your notes</h2>
+      <label for="search-input" class="visually-hidden">Search notes</label>
+      <input type="search" id="search-input" placeholder="Search notes">
+      <p id="note-count"></p>
+      <button type="button" id="clear-all" class="secondary">Clear all</button>
+      <ul id="notes-list"></ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>QuickNotes 2026</p>
+  </footer>
+</body>
+</html>
